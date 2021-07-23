@@ -1,12 +1,14 @@
 # AluraFlix
 Implementação de API REST para o programa Alura Challenge Back-End.
 
-# End Points 
-- Listar todos os videos 
-  Tipo de Requisição: GET
-  URL: http://ip_servidor/videos
+
+## Listar todos os videos 
+  **Tipo de Requisição:** GET
+  
+  **URL:** http://ip_servidor/videos
   
   Exemplo de resposta:
+  ```
   [
     {
         "id": 1,
@@ -20,15 +22,16 @@ Implementação de API REST para o programa Alura Challenge Back-End.
         "descricao": "Conversar com o Raphael Albino, autor do livro  \"Métricas ágeis: ",
         "url": "https://www.youtube.com/watch?v=BFYGFZf91tQ"
     }
-]
-  
+  ]
+  ```
 
-- Lista um vídeo selecionado pelo id informado na chamada
-  Tipo de Requisição: GET
-  URL: http://ip_servidor/videos/id_do_video
+  ## Lista um vídeo pelo id
+  **Tipo de Requisição:** GET
+  
+  **URL:** http://ip_servidor/videos/id
   
   Exemplo de Resposta:
-  URL: http://ip_servidor/videos/5
+  ```
    [
     {
         "id": 5,
@@ -37,47 +40,55 @@ Implementação de API REST para o programa Alura Challenge Back-End.
         "url": "https://www.link_do_video.com.br"
     }
    ]
+  ```
+  ## Adiciona um vídeo
+  **Tipo de Requisição:** POST 
   
-- Adiciona um vídeo
-  Tipo de Requisição: POST 
-  URL: http://ip_servidor/videos/
+  **URL:** http://ip_servidor/videos/
+  ```
   {
       "titulo": "Titulo do Video ",
       "descricao": "Descrição do video ",
       "url": "https://www.link_do_video.com.br"
   }
-  
+  ```
   Exemplo de Resposta:
+  
   Head:
+  ```
     Locatio : http://ip_servidor/videos/33
+  ```  
   Body
-    {
+  ```
+  {
       "id": 33
       "titulo": "Titulo do Video ",
       "descricao": "Descrição do video ",
       "url": "https://www.link_do_video.com.br"
     }
- 
-  - Atualizar dados de um vídeo existente
-  Tipo de Requisição: PUT 
-  URL: http://ip_servidor/videos/id
+  ```
+  ## Atualizar dados de um vídeo existente
+  **Tipo de Requisição:** PUT 
+  
+  **URL:** http://ip_servidor/videos/id
+  ```
   {
       "titulo": "Titulo do Video Atualizado",
       "descricao": "Descrição do video ",
       "url": "https://www.link_do_video.com.br"
   }
+  ```
   OBS: Todos os campos devem ser preenchido, no envio da chamada. 
 
   Exemplo de Resposta:
-    {
+  ```
+  {
       "titulo": "Titulo do Video Atualizado",
       "descricao": "Descrição do video ",
       "url": "https://www.link_do_video.com.br"
-    }
-    
-- Remover um vídeo pelo id
-  Tipo de Requisição: DELETE
-  URL: http://ip_servidor/videos/id_do_video
+  }
+  ```  
+  ## Remover um vídeo pelo id
+  **Tipo de Requisição:** DELETE
   
-  Exemplo de Resposta:
-  Status: 200 OK
+  **URL:** http://ip_servidor/videos/id_do_video
