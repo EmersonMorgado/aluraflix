@@ -28,7 +28,7 @@ Implementação de API REST para o programa Alura Challenge Back-End.
   ## Lista um vídeo pelo id
   **Tipo de Requisição:** GET
   
-  **URL:** http://ip_servidor/videos/id
+  **URL:** http://ip_servidor/videos/{id}
   
   Exemplo de Resposta:
   ```
@@ -70,7 +70,7 @@ Implementação de API REST para o programa Alura Challenge Back-End.
   ## Atualizar dados de um vídeo existente
   **Tipo de Requisição:** PUT 
   
-  **URL:** http://ip_servidor/videos/id
+  **URL:** http://ip_servidor/videos/{id}
   ```
   {
       "titulo": "Titulo do Video Atualizado",
@@ -91,4 +91,4 @@ Implementação de API REST para o programa Alura Challenge Back-End.
   ## Remover um vídeo pelo id
   **Tipo de Requisição:** DELETE
   
-  **URL:** http://ip_servidor/videos/id_do_video
+  **URL:** http://ip_servidor/videos/{id}
