@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.sun.istack.NotNull;
 
+import br.com.emersonmorgado.aluraflix.aluraflix.model.Categoria;
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Video;
 
 public class VideoForm {
@@ -25,6 +26,11 @@ public class VideoForm {
 	@Length(min = 10, max = 100)
 	private String url;
 
+	@NotNull
+	@NotEmpty
+	@Length(min = 1, max = 10)
+	private String categoriaId;
+	
 	public String getTitulo() {
 		return titulo;
 	}
@@ -49,8 +55,12 @@ public class VideoForm {
 		this.url = url;
 	}
 
-	public Video getVideo() {
-		return new Video(titulo, descricao, url);
+	public Video getVideo(Categoria categoria) {
+		return new Video(titulo, descricao, url, categoria);
+	}
+
+	public String getCategoriaId() {
+		return categoriaId;
 	}
 	
 }

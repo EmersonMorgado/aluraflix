@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.dto.VideoDto;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.AtualizaVideoForm;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.VideoForm;
+import br.com.emersonmorgado.aluraflix.aluraflix.model.Categoria;
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Video;
+import br.com.emersonmorgado.aluraflix.aluraflix.service.CategoriaService;
 import br.com.emersonmorgado.aluraflix.aluraflix.service.VideoService;
 
 @RestController
@@ -32,6 +35,9 @@ public class VideoController {
 	@Autowired
 	private VideoService videoService;
 
+	@Autowired
+	private CategoriaService categoriaService;
+
 	@GetMapping
 	public ResponseEntity<List<VideoDto>> listarTodos() {
 		List<VideoDto> videos = videoService.getVideos();
@@ -39,39 +45,50 @@ public class VideoController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<VideoDto> buscarPorId(@PathVariable Long id){
+	public ResponseEntity<Object> buscarPorId(@PathVariable Long id){
 		Optional<Video> video = videoService.findById(Long.valueOf(id));
 		if(video.isPresent()) {
 			return ResponseEntity.ok(new VideoDto(video.get()));
 		}		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mensagem.VIDEO_NAO_ENCONTRADO.getDescricao());
 	}
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<VideoDto> cadatrar(@RequestBody @Valid VideoForm form, UriComponentsBuilder uriBuilder){
-		VideoDto videoDto = videoService.cadastrar(form);
-		URI uri = uriBuilder.path("/videos/{id}").buildAndExpand(videoDto.getId()).toUri();
-		return ResponseEntity.created(uri).body(videoDto);
+	public ResponseEntity<Object> cadastrar(@RequestBody @Valid VideoForm form, UriComponentsBuilder uriBuilder){
+		Optional<Categoria> categoria = categoriaService.findById(Long.valueOf(form.getCategoriaId()));
+		if(categoria.isPresent()) {
+			VideoDto videoDto = videoService.cadastrar(form, categoria.get());
+			URI uri = uriBuilder.path("/videos/{id}").buildAndExpand(videoDto.getId()).toUri();
+			return ResponseEntity.created(uri).body(videoDto);
+		}
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mensagem.CATEGORIA_NAO_ENCONTRADA.getDescricao());
 	}
 	
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<VideoDto> remover(@PathVariable Long id){
+	public ResponseEntity<Object> remover(@PathVariable Long id){
 		Optional<Video> video = videoService.findById(id);
 		if(video.isPresent()) {
-			videoService.remove(video.get());
+			videoService.remover(video.get());
 			return ResponseEntity.ok().build();
 		}		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mensagem.VIDEO_NAO_ENCONTRADO.getDescricao());
 	}
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<VideoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizaVideoForm form){
-		Optional<Video> video = videoService.findById(id);
-		if(video.isPresent()) {
-			VideoDto videoDto = videoService.atualiza(video.get(), form);
+	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizaVideoForm form){
+		Optional<Categoria> categoria = categoriaService.findById(Long.valueOf(form.getCategoriaId()));
+		if(!categoria.isPresent()) { 
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mensagem.CATEGORIA_NAO_ENCONTRADA.getDescricao());
+		}
+		Optional<Video> videoObj = videoService.findById(id);
+		if(videoObj.isPresent()) {
+			Video video = videoObj.get();
+			video.setCategoria(categoria.get());
+			VideoDto videoDto = videoService.atualizar(video, form);
 			return ResponseEntity.ok(videoDto);
 		}		
 		return ResponseEntity.notFound().build();

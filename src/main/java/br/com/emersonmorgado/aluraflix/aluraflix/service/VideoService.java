@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.dto.VideoDto;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.AtualizaVideoForm;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.VideoForm;
+import br.com.emersonmorgado.aluraflix.aluraflix.model.Categoria;
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Video;
 import br.com.emersonmorgado.aluraflix.aluraflix.repository.VideoRepository;
 
@@ -33,17 +34,17 @@ public class VideoService {
 		return videoRepository.findById(id);
 	}
 
-	public VideoDto cadastrar(VideoForm form) {
-		Video video = form.getVideo();
+	public VideoDto cadastrar(VideoForm form, Categoria categoria) {
+		Video video = form.getVideo(categoria);
 		VideoDto videoDto = new VideoDto(videoRepository.save(video));
 		return videoDto;
 	}
 
-	public void remove(Video video) {
+	public void remover(Video video) {
 		videoRepository.delete(video);		
 	}
 
-	public VideoDto atualiza(Video video, AtualizaVideoForm form) {
+	public VideoDto atualizar(Video video, AtualizaVideoForm form) {
 		Video videoAtualizado = form.atualiza(video);
 		VideoDto videoDto =new VideoDto(videoRepository.save(videoAtualizado));
 		return videoDto;

@@ -24,6 +24,11 @@ public class AtualizaVideoForm {
 	@NotEmpty
 	@Length(min = 10, max = 100)
 	private String url;
+	
+	@NotNull
+	@NotEmpty
+	@Length(min = 1, max = 10)
+	private String categoriaId;
 
 	public String getTitulo() {
 		return titulo;
@@ -54,5 +59,10 @@ public class AtualizaVideoForm {
 		video.setDescricao(descricao);
 		video.setDescricao(url);
 		return video;
+	}
+
+	public String getCategoriaId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
