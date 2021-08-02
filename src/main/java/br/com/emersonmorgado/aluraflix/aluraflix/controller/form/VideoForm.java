@@ -26,10 +26,7 @@ public class VideoForm {
 	@Length(min = 10, max = 100)
 	private String url;
 
-	@NotNull
-	@NotEmpty
-	@Length(min = 1, max = 10)
-	private String categoriaId;
+	private Long categoriaId = 1L;
 	
 	public String getTitulo() {
 		return titulo;
@@ -59,7 +56,7 @@ public class VideoForm {
 		return new Video(titulo, descricao, url, categoria);
 	}
 
-	public String getCategoriaId() {
+	public Long getCategoriaId() {
 		return categoriaId;
 	}
 	

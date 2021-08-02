@@ -1,26 +1,31 @@
 package br.com.emersonmorgado.aluraflix.aluraflix.controller.form;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-
-import com.sun.istack.NotNull;
 
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Categoria;
 
 public class CategoriaForm {
-
 	
-	@NotNull
-	@NotEmpty
+	private final String msgTitulo = "Título não deve estar em branco";
+	private final String msgCor = "Cor não deve estar em branco";
+
+	@NotNull(message = msgTitulo)
+	@NotEmpty(message = msgTitulo)
 	@Length(min = 3, max = 60)
 	private String titulo;
 	
-	@NotNull
-	@NotEmpty
+	@NotNull(message = msgCor)
+	@NotEmpty(message = msgCor)
 	@Length(min = 3, max = 20)
 	private String cor;
 	
+	public CategoriaForm(String titulo, String cor) {
+		this.titulo = titulo;
+		this.cor = cor;
+	}
 	public String getTitulo() {
 		return titulo;
 	}

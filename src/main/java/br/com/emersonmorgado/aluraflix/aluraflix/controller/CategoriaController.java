@@ -16,14 +16,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.dto.CategoriaDto;
+import br.com.emersonmorgado.aluraflix.aluraflix.controller.dto.VideosPorCategoriaDto;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.AtualizaCategoriaForm;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.CategoriaForm;
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Categoria;
 import br.com.emersonmorgado.aluraflix.aluraflix.service.CategoriaService;
+import br.com.emersonmorgado.aluraflix.aluraflix.service.VideoService;
 
 @RestController
 @RequestMapping("/categorias")
@@ -32,6 +35,9 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService categoriaService;
 
+	@Autowired
+	private VideoService videoService;
+	
 	@GetMapping
 	public ResponseEntity<List<CategoriaDto>> listarTodas() {
 		List<CategoriaDto> categoriasDto = categoriaService.getCategoriasDto();
@@ -39,13 +45,24 @@ public class CategoriaController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<CategoriaDto> buscarPorId(@PathVariable Long id){
+	public ResponseEntity<CategoriaDto> buscarPorId(@PathVariable Long id, @RequestParam(required = false) String video){
 		Optional<Categoria> categoria = categoriaService.findById(Long.valueOf(id));
 		if(categoria.isPresent()) {
 			return ResponseEntity.ok(new CategoriaDto(categoria.get()));
 		}		
 		return ResponseEntity.notFound().build();
 	}
+	
+	@GetMapping("/{id}/videos")
+	public ResponseEntity<VideosPorCategoriaDto> buscarVideosPorCategoria(@PathVariable Long id){
+		Optional<Categoria> categoria = categoriaService.findById(Long.valueOf(id));
+		if(categoria.isPresent()) {
+			Categoria categoriaVideos = videoService.findByCategoria(categoria.get());
+			return ResponseEntity.ok(new VideosPorCategoriaDto(categoriaVideos));
+		}		
+		return ResponseEntity.notFound().build();
+	}
+	
 	@PostMapping
 	@Transactional
 	public ResponseEntity<CategoriaDto> cadastrar(@RequestBody @Valid CategoriaForm form, UriComponentsBuilder uriBuilder){

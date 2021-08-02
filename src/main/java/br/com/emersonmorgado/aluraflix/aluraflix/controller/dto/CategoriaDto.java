@@ -12,7 +12,7 @@ public class CategoriaDto {
 	}
 
 	public CategoriaDto(Categoria categoria) {
-		id = categoria.getId();
+		id = categoria.getIdCategoria();
 		titulo = categoria.getTitulo();
 		cor = categoria.getCor();
 	}
@@ -27,24 +27,12 @@ public class CategoriaDto {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getTitulo() {
 		return titulo;
 	}
 
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
 	public String getCor() {
 		return cor;
-	}
-
-	public void setCor(String cor) {
-		this.cor = cor;
 	}
 
 }

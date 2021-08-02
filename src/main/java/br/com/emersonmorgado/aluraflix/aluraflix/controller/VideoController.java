@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -39,7 +40,13 @@ public class VideoController {
 	private CategoriaService categoriaService;
 
 	@GetMapping
-	public ResponseEntity<List<VideoDto>> listarTodos() {
+	public ResponseEntity<List<VideoDto>> listarTodos(@RequestParam(required = false) String titulo) {
+		if(titulo != null) {
+			List<VideoDto> videos = videoService.buscaPorTitulo(titulo);
+			if(videos.isEmpty())return ResponseEntity.notFound().build();
+			return ResponseEntity.ok().body(videos);
+			
+		}
 		List<VideoDto> videos = videoService.getVideos();
 		return ResponseEntity.ok().body(videos);
 	}
