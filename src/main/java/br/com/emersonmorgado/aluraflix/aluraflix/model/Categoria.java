@@ -1,3 +1,4 @@
+
 package br.com.emersonmorgado.aluraflix.aluraflix.model;
 
 import java.io.Serializable;

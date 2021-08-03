@@ -53,16 +53,15 @@ public class AtualizaVideoForm {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
+	
+	public String getCategoriaId() {
+		return categoriaId;
+	}
+	
 	public Video atualiza(Video video) {
 		video.setTitulo(titulo);
 		video.setDescricao(descricao);
 		video.setDescricao(url);
 		return video;
-	}
-
-	public String getCategoriaId() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
