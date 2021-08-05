@@ -1,5 +1,7 @@
 package br.com.emersonmorgado.aluraflix.aluraflix.controller.dto;
 
+import org.springframework.data.domain.Page;
+
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Categoria;
 
 public class CategoriaDto {
@@ -33,6 +35,11 @@ public class CategoriaDto {
 
 	public String getCor() {
 		return cor;
+	}
+
+	public static Page<CategoriaDto> converter(Page<Categoria> categoria) {
+		return categoria.map(CategoriaDto:: new);
+		
 	}
 
 }

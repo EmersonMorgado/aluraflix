@@ -1,13 +1,16 @@
 package br.com.emersonmorgado.aluraflix.aluraflix.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.dto.CategoriaDto;
-import br.com.emersonmorgado.aluraflix.aluraflix.controller.dto.VideosPorCategoriaDto;
+import br.com.emersonmorgado.aluraflix.aluraflix.controller.dto.VideoSemCategoriaDto;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.AtualizaCategoriaForm;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.CategoriaForm;
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Categoria;
@@ -39,8 +42,8 @@ public class CategoriaController {
 	private VideoService videoService;
 	
 	@GetMapping
-	public ResponseEntity<List<CategoriaDto>> listarTodas() {
-		List<CategoriaDto> categoriasDto = categoriaService.getCategoriasDto();
+	public ResponseEntity<Page<CategoriaDto>> listarTodas(@PageableDefault(sort = "idCategoria", direction = Direction.ASC, page = 0, size = 5) Pageable paginacao) {
+		Page<CategoriaDto> categoriasDto = categoriaService.getCategoriasDto(paginacao);
 		return ResponseEntity.ok().body(categoriasDto);
 	}
 	
@@ -54,11 +57,12 @@ public class CategoriaController {
 	}
 	
 	@GetMapping("/{id}/videos")
-	public ResponseEntity<VideosPorCategoriaDto> buscarVideosPorCategoria(@PathVariable Long id){
+	public ResponseEntity<Page<VideoSemCategoriaDto>> buscarVideosPorCategoria(@PathVariable Long id,
+			@PageableDefault(sort = "idVideo", direction = Direction.ASC, page = 0, size = 5) Pageable paginacao){
 		Optional<Categoria> categoria = categoriaService.findById(Long.valueOf(id));
 		if(categoria.isPresent()) {
-			Categoria categoriaVideos = videoService.findByCategoria(categoria.get());
-			return ResponseEntity.ok(new VideosPorCategoriaDto(categoriaVideos));
+			Page<VideoSemCategoriaDto> videos = videoService.findByCategoria(categoria.get(), paginacao);
+			return ResponseEntity.ok(videos);
 		}		
 		return ResponseEntity.notFound().build();
 	}

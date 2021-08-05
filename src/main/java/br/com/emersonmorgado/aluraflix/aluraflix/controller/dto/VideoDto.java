@@ -1,5 +1,7 @@
 package br.com.emersonmorgado.aluraflix.aluraflix.controller.dto;
 
+import org.springframework.data.domain.Page;
+
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Video;
 
 public class VideoDto {
@@ -36,5 +38,9 @@ public class VideoDto {
 
 	public String getUrl() {
 		return url;
+	}
+
+	public static Page<VideoDto> converter(Page<Video> video) {
+		return video.map(VideoDto::new);
 	}
 }

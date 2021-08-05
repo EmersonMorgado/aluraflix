@@ -1,5 +1,7 @@
 package br.com.emersonmorgado.aluraflix.aluraflix.controller.dto;
 
+import org.springframework.data.domain.Page;
+
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Video;
 
 public class VideoSemCategoriaDto {
@@ -30,6 +32,10 @@ public class VideoSemCategoriaDto {
 
 	public String getUrl() {
 		return url;
+	}
+
+	public static Page<VideoSemCategoriaDto> converter(Page<Video> videos) {
+		return videos.map(VideoSemCategoriaDto::new);
 	}
 
 }

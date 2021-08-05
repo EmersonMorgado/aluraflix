@@ -1,13 +1,16 @@
 package br.com.emersonmorgado.aluraflix.aluraflix.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,14 +43,13 @@ public class VideoController {
 	private CategoriaService categoriaService;
 
 	@GetMapping
-	public ResponseEntity<List<VideoDto>> listarTodos(@RequestParam(required = false) String titulo) {
+	public ResponseEntity<Page<VideoDto>> listarTodos(@RequestParam(required = false) String titulo,
+									  @PageableDefault(sort = "idVideo", direction = Direction.ASC, page = 0, size = 5) Pageable paginacao) {
 		if(titulo != null) {
-			List<VideoDto> videos = videoService.buscaPorTitulo(titulo);
-			if(videos.isEmpty())return ResponseEntity.notFound().build();
+			Page<VideoDto> videos = videoService.buscaPorTitulo(titulo, paginacao);
 			return ResponseEntity.ok().body(videos);
-			
 		}
-		List<VideoDto> videos = videoService.getVideos();
+		Page<VideoDto> videos = videoService.getVideos(paginacao);
 		return ResponseEntity.ok().body(videos);
 	}
 	
