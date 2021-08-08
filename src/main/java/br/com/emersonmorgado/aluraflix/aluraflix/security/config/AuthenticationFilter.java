@@ -11,9 +11,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.emersonmorgado.aluraflix.aluraflix.security.model.Usuario;
-import br.com.emersonmorgado.aluraflix.aluraflix.security.repository.UsuarioRepository;
-import br.com.emersonmorgado.aluraflix.aluraflix.security.service.TokenService;
+import br.com.emersonmorgado.aluraflix.aluraflix.model.Usuario;
+import br.com.emersonmorgado.aluraflix.aluraflix.repository.UsuarioRepository;
+import br.com.emersonmorgado.aluraflix.aluraflix.service.TokenService;
 
 public class AuthenticationFilter extends OncePerRequestFilter{
 	
@@ -30,7 +30,6 @@ public class AuthenticationFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		
 		String token = getToken(request);
-		System.out.println("token: ---" + token);
 		boolean valid = tokenService.tokenEhValido(token);
 		if(valid) {
 			authenticationClient(token);
@@ -41,13 +40,12 @@ public class AuthenticationFilter extends OncePerRequestFilter{
 	private void authenticationClient(String token) {
 		Long idUser = tokenService.getIdUsuario(token);
 		Usuario usuario = usuarioRepository.findById(idUser).get();
-		UsernamePasswordAuthenticationToken authentication =  new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+		UsernamePasswordAuthenticationToken authentication =  new UsernamePasswordAuthenticationToken(usuario, null, null);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
 	private String getToken(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
-		System.out.println(token);
 		if(token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
 			return null;
 		}

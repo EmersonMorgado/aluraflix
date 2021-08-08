@@ -14,16 +14,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import br.com.emersonmorgado.aluraflix.aluraflix.security.repository.UsuarioRepository;
-import br.com.emersonmorgado.aluraflix.aluraflix.security.service.AuthenticationService;
-import br.com.emersonmorgado.aluraflix.aluraflix.security.service.TokenService;
+import br.com.emersonmorgado.aluraflix.aluraflix.repository.UsuarioRepository;
+import br.com.emersonmorgado.aluraflix.aluraflix.service.AutenticacaoService;
+import br.com.emersonmorgado.aluraflix.aluraflix.service.TokenService;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfigutations extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
-	private AuthenticationService authenticationService;
+	private AutenticacaoService authenticationService;
 	
 	@Autowired
 	private TokenService tokenService;
@@ -45,7 +45,8 @@ public class SecurityConfigutations extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers(HttpMethod.GET, "/videos").permitAll()
+		.antMatchers(HttpMethod.POST, "/auth").permitAll()
+		.antMatchers(HttpMethod.GET, "/videos/free").permitAll()
 		.anyRequest().authenticated()
 		.and().csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -55,7 +56,5 @@ public class SecurityConfigutations extends WebSecurityConfigurerAdapter{
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		// TODO Auto-generated method stub
-		super.configure(web);
 	}
 }

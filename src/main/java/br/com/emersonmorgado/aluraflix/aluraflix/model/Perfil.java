@@ -1,9 +1,12 @@
-package br.com.emersonmorgado.aluraflix.aluraflix.security.model;
+package br.com.emersonmorgado.aluraflix.aluraflix.model;
+
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,8 +18,18 @@ public class Perfil implements GrantedAuthority{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	private String nome;
+
+	@ManyToMany
+	private List<Usuario> usuario;
+	
+	public List<Usuario> getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(List<Usuario> usuario) {
+		this.usuario = usuario;
+	}
 
 	public Long getId() {
 		return id;

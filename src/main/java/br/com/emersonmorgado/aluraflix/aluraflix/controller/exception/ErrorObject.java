@@ -1,4 +1,4 @@
-package br.com.emersonmorgado.aluraflix.aluraflix.controller.error;
+package br.com.emersonmorgado.aluraflix.aluraflix.controller.exception;
 
 public class ErrorObject {
     private final String message;
@@ -11,7 +11,7 @@ public class ErrorObject {
 		this.field = field;
 		this.parameter = parameter;
 	}
-	
+
 	public String getMessage() {
 		return message;
 	}

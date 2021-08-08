@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -49,8 +50,7 @@ public class VideoController {
 			Page<VideoDto> videos = videoService.buscaPorTitulo(titulo, paginacao);
 			return ResponseEntity.ok().body(videos);
 		}
-		Page<VideoDto> videos = videoService.getVideos(paginacao);
-		return ResponseEntity.ok().body(videos);
+		return ResponseEntity.ok().body(videoService.getVideos(paginacao));
 	}
 	
 	@GetMapping("/{id}")
@@ -71,7 +71,6 @@ public class VideoController {
 			URI uri = uriBuilder.path("/videos/{id}").buildAndExpand(videoDto.getId()).toUri();
 			return ResponseEntity.created(uri).body(videoDto);
 		}
-		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mensagem.CATEGORIA_NAO_ENCONTRADA.getDescricao());
 	}
 	
@@ -97,9 +96,14 @@ public class VideoController {
 		if(videoObj.isPresent()) {
 			Video video = videoObj.get();
 			video.setCategoria(categoria.get());
-			VideoDto videoDto = videoService.atualizar(video, form);
-			return ResponseEntity.ok(videoDto);
+			return ResponseEntity.ok(videoService.atualizar(video, form));
 		}		
 		return ResponseEntity.notFound().build();
+	}
+	@GetMapping("/free")
+	public ResponseEntity<Page<VideoDto>> listarVideosFree() {
+		
+		PageRequest pageRequest = PageRequest.of(1, 2, Direction.ASC, "idVideo");
+		return ResponseEntity.ok().body(videoService.getVideos(pageRequest));
 	}
 }

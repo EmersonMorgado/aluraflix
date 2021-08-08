@@ -1,4 +1,4 @@
-package br.com.emersonmorgado.aluraflix.aluraflix.security.service;
+package br.com.emersonmorgado.aluraflix.aluraflix.service;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import br.com.emersonmorgado.aluraflix.aluraflix.security.model.Usuario;
+import br.com.emersonmorgado.aluraflix.aluraflix.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
