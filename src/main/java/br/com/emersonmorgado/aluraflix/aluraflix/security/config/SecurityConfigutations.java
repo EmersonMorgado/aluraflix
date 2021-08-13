@@ -3,6 +3,7 @@ package br.com.emersonmorgado.aluraflix.aluraflix.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,6 +21,7 @@ import br.com.emersonmorgado.aluraflix.aluraflix.service.TokenService;
 
 @EnableWebSecurity
 @Configuration
+@Profile("prod")
 public class SecurityConfigutations extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
@@ -47,6 +49,7 @@ public class SecurityConfigutations extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.antMatchers(HttpMethod.GET, "/videos/free").permitAll()
+		.antMatchers(HttpMethod.GET, "/").permitAll()
 		.anyRequest().authenticated()
 		.and().csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

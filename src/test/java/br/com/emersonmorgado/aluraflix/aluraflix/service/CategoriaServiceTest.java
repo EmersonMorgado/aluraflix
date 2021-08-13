@@ -1,9 +1,6 @@
 package br.com.emersonmorgado.aluraflix.aluraflix.service;
 
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import br.com.emersonmorgado.aluraflix.aluraflix.controller.dto.CategoriaDto;
 import br.com.emersonmorgado.aluraflix.aluraflix.controller.form.CategoriaForm;
 import br.com.emersonmorgado.aluraflix.aluraflix.model.Categoria;
 import br.com.emersonmorgado.aluraflix.aluraflix.repository.CategoriaRepository;
@@ -36,21 +34,11 @@ class CategoriaServiceTest {
 	}
 	
 	@Test
-	void testCadastrar() {
+	void testCategoriaDto() {
 		CategoriaForm form =  new CategoriaForm("Humor","azul");
 		Categoria categoria = form.getCategoria();
-		Categoria categoria2 = new Categoria(1L,"Humor", "Azul",null);
-		when(categoriaRepository.save(categoria)).thenReturn(categoria2);
-		//CategoriaDto categoriaDto = categoriaService.cadastrar(form);
-		//assertEquals(categoriaDto.getId(), categoria.getId());
+		CategoriaDto categoria2 = new CategoriaDto(categoria);
+		assertEquals(categoria2.getCor(), form.getCor());
 		
 	}
-
-	private List<Categoria> categorias(){
-		Categoria categoria1 = new Categoria(1L, "Humor", "Azul", null);
-		Categoria categoria2 = new Categoria(2L, "Ação", "Verde", null);
-		Categoria categoria3 = new Categoria(2L, "Aventura", "Laranja", null);
-		return Arrays.asList(categoria1,categoria2, categoria3);	
-	}
-	
 }

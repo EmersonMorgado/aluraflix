@@ -3,6 +3,7 @@ package br.com.emersonmorgado.aluraflix.aluraflix.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import br.com.emersonmorgado.aluraflix.aluraflix.model.Usuario;
 import br.com.emersonmorgado.aluraflix.aluraflix.repository.UsuarioRepository;
 
 @Service
+@Profile({"prod", "dev"})
 public class AutenticacaoService implements UserDetailsService{
 	
 	@Autowired

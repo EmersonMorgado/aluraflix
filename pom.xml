@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.emersonmorgado.aluraflix</groupId>
 	<artifactId>aluraflix</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>aluraflix</name>
 	<description>API de se serviços de vídeo da AluraFlix</description>
 	<properties>

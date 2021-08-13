@@ -77,6 +77,9 @@ public class VideoController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Object> remover(@PathVariable Long id){
+		if ( id < 5) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sem permissão para remover este registro");
+		}
 		Optional<Video> video = videoService.findById(id);
 		if(video.isPresent()) {
 			videoService.remover(video.get());
@@ -88,6 +91,9 @@ public class VideoController {
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Object> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizaVideoForm form){
+		if ( id < 5) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sem permissão para atualizar este registro");
+		}
 		Optional<Categoria> categoria = categoriaService.findById(Long.valueOf(form.getCategoriaId()));
 		if(!categoria.isPresent()) { 
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mensagem.CATEGORIA_NAO_ENCONTRADA.getDescricao());
