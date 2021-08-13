@@ -19,4 +19,4 @@ Os principais recursos implementados são:
 * Deploy da aplicação em cloud computer Oracle
 * Tratativa de erros personalizados 
 
-A documentação da API foi constuída no Postman, disponível em https://documenter.getpostman.com/view/6125281/TzsZrTiX
+Documentação da API disponível em https://documenter.getpostman.com/view/6125281/TzsZrTiX
