@@ -19,16 +19,18 @@ public class AuthenticationFilter extends OncePerRequestFilter{
 	
 	private TokenService tokenService;
 	private UsuarioRepository usuarioRepository;
+	private LogService logService;
 	
-	public AuthenticationFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
+	public AuthenticationFilter(TokenService tokenService, UsuarioRepository usuarioRepository, LogService logService) {
 		this.tokenService = tokenService;
 		this.usuarioRepository = usuarioRepository;
+		this.logService = logService;
 	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+		logService.gravarLog("Request", request.getRequestURL().toString() + " - " + request.getRemoteAddr());
 		String token = getToken(request);
 		boolean valid = tokenService.tokenEhValido(token);
 		if(valid) {
